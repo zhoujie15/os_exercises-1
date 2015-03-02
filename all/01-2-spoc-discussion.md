@@ -44,9 +44,9 @@
 目前的台式PC机标准配置和价格？
 
 - 目前PC机子的标配: 
-- CPU:Intel Core i5-Quad Core； 
-- 内存:4GB； 
-- Processor Speed:3.20GHz-Turbo to 3.6； 
+- CPU：Intel Core i5-Quad Core； 
+- 内存：4GB； 
+- 处理器速度：3.20GHz-Turbo to 3.6； 
 - 显示器：20"LED Flat Panel 1600*900； 
 - 显卡：Intel HD 4600 Dual Monitor Capable； 
 - 硬盘：500GB ； 

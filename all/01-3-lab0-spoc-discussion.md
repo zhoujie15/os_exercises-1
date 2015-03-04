@@ -73,9 +73,8 @@ struct gatedesc {
     unsigned gd_off_31_16 : 16;        // high bits of offset in segment
 };
 ```
-- [x]  
 
-> 
+> “：”后面的数字是定义位域的宽度。表示这个变量占的bit位数。比如unsigned gd_p : 1;  代表变gd_p占1个bit。
 
 对于如下的代码段，
 ```

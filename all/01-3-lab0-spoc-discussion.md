@@ -24,14 +24,12 @@
 
 
 如何把一个在gdb中或执行过程中出现的物理/线性地址与你写的代码源码位置对应起来？
-- [x]  
 
 >  使用list命令。
 
 了解函数调用栈对lab实验有何帮助？
-- 有利于更好地理解操作系统的实现机制，更容易理解内存分配和进程控制中的问题。
 
->   
+>   有利于更好地理解操作系统的实现机制，更容易理解内存分配和进程控制中的问题。
 
 你希望从lab中学到什么知识？
 
@@ -50,7 +48,7 @@
 >  在安装过程中，使用sudo apt-get install diff失败，采用提示的方法安装了diffutils后解决了问题。
 
 熟悉基本的git命令行操作命令，从github上的[ucore git repo](http://www.github.com/chyyuu/ucore_lab)下载ucore lab实验
-- [x]  
+- 已经使用。
 
 > http://www.cnblogs.com/cspku/articles/Git_cmds.html
 

@@ -53,7 +53,8 @@
 > 
 
 尝试用qemu+gdb（or ECLIPSE-CDT）调试lab1
-- [x]  
+- 使用了make debug命令进行了qemu + gdb调试。
+- 直接使用eclipsecdt也可以进行调试。
 
 > 
 

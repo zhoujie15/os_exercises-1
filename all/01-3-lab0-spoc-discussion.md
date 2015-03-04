@@ -42,9 +42,10 @@
 ---
 
 搭建好实验环境，请描述碰到的困难和解决的过程。
-- [x]  
+- 我采用了直接在Linux系统中配置环境的过程。
+- 我在系统中安装了gdb make diff meld git qemu eclipsecdt
 
-> 
+>  在安装过程中，使用sudo apt-get install diff失败，采用提示的方法安装了diffutils后解决了问题。
 
 熟悉基本的git命令行操作命令，从github上的[ucore git repo](http://www.github.com/chyyuu/ucore_lab)下载ucore lab实验
 - [x]  

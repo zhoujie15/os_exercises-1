@@ -33,8 +33,10 @@ Linux系统调用大概有400个左右。
 uCore的系统调用大概有22个。
 
 功能（根据名称猜测功能）
-－ 进程管理：
-－ exit fork wait exec yield kill getpid 
+- 进程管理(sys_exit, sys_fork, sys_wait, sys_exec, sys_yield, sys_getpid, sys_pgdir, sys_lab6_set_priority, sys_sleep)
+- 文件系统控制(sys_open, sys_close, sys_read, sys_write, sys_seek, sys_fstat, sys_fync, sys_dup, sys_putc)
+- 系统控制(sys_gettime, sys_getcwd, sys_getdirentry)
+- 进程间通信（sys_kill）
 
  ```
   + 采分点：说明了ucore的大致数量（二十几个），说明了ucore系统调用的主要分类（文件操作，进程管理，内存管理等）

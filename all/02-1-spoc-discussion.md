@@ -7,49 +7,15 @@
 - BIOS是固化到主板上的程序，UEFI是在所有平台上一致的操作系统服务。
  1. 描述PXE的大致启动流程。
 
-- PXE大致启动流程：设备发送DHCPDISCOVER给DHCP server和 ADS PXE service，DHCP server
-
-给设备提供IP地址，ADS PXE service忽略这条信息或者相应DHCPOFFER IP地址。设备发送
-
-DHCPREQUEST给DHCP server，DHCP server返回DHCPPACK。如果之前ADS PXE service有响应，
-
-设备发出DHCPREQUEST启动程序给ADS PXE service,ADS PXE service返回DHPACK启动程序路径
-
-，TFTP获得STARTNBS启动镜像请求，TFTP发送STARTNBS启动镜像。SRARTNBS发送PXE开机指令
-
-请求给Controller service，Controller service返回/pxe/boot-vf，PXE启动。
+- PXE大致启动流程：设备发送DHCPDISCOVER给DHCP server和 ADS PXE service，DHCP server给设备提供IP地址，ADS PXE service忽略这条信息或者相应DHCPOFFER IP地址。设备发送DHCPREQUEST给DHCP server，DHCP server返回DHCPPACK。如果之前ADS PXE service有响应，设备发出DHCPREQUEST启动程序给ADS PXE service,ADS PXE service返回DHPACK启动程序路径，TFTP获得STARTNBS启动镜像请求，TFTP发送STARTNBS启动镜像。SRARTNBS发送PXE开机指令请求给Controller service，Controller service返回/pxe/boot-vf，PXE启动。
 
 ## 3.2 系统启动流程
  1. 了解NTLDR的启动流程。
-- 访问引导驱动器上的文件系统，如果windows系统处于休眠状态，
-
-hiberfil.sys会加载到内存，系统从它离开的地方恢复，如果选择了一个不是基于NT的操作系
-
-统，NTLDR会加载在boot.ini的相关文件，并给它控制；如果选择了一个基于NT的操作系统，
-
-NTLDR会运行ntdetectc.com以获取计算机上的硬件信息，开始运行Ntoskrnl.exe，传递给他
-
-ntdetect.com返回的信息。
+- 访问引导驱动器上的文件系统，如果windows系统处于休眠状态，hiberfil.sys会加载到内存，系统从它离开的地方恢复，如果选择了一个不是基于NT的操作系统，NTLDR会加载在boot.ini的相关文件，并给它控制；如果选择了一个基于NT的操作系统，NTLDR会运行ntdetectc.com以获取计算机上的硬件信息，开始运行Ntoskrnl.exe，传递给他ntdetect.com返回的信息。
  1. 了解GRUB的启动流程。
-- GRUB启动流程：第一阶段装载程序，被加载并运行，通过MBR或是分区引导扇区的另一个加载
-
-程序；如果有需要的话，会加载中间阶段加载器，并通过第一阶段加载程序执行。如果第二阶
-
-段的加载程序是不连续的或者文件系统或硬件需要特殊处理以便访问第二阶段加载器；第二阶
-
-段加载器然后会加载并执行，这将现实GRUB启动菜单，允许用户选择操作系统，或者检查和编
-
-辑启动参数；选择好操作系统，GRUB将系统内核加载进入内存，并将控制传递给内核，或者，
-
-GRUB可以通过链加载将启动程序的控制传递给另一个启动器。
+- GRUB启动流程：第一阶段装载程序，被加载并运行，通过MBR或是分区引导扇区的另一个加载程序；如果有需要的话，会加载中间阶段加载器，并通过第一阶段加载程序执行。如果第二阶段的加载程序是不连续的或者文件系统或硬件需要特殊处理以便访问第二阶段加载器；第二阶段加载器然后会加载并执行，这将现实GRUB启动菜单，允许用户选择操作系统，或者检查和编辑启动参数；选择好操作系统，GRUB将系统内核加载进入内存，并将控制传递给内核，或者，GRUB可以通过链加载将启动程序的控制传递给另一个启动器。
  1. 比较NTLDR和GRUB的功能有差异。
-- GRUB可以放在ESP、MBR/VBR，Floppy；可以从硬盘，第二硬盘，逻辑分区，CD-
-
-ROM,Floppy,USB,Zip,LAN启动，可以启动MS-DOS,Windows 9x/Me, Linux；NTLDR可以放在
-
-MBR/VBR，Floopy,不能只放在MBR，可以从硬盘，CD-ROM,Floopy,LAN启动，能启动MS-DOS，
-
-Windows 9x/Me, Windows NT系列。
+- GRUB可以放在ESP、MBR/VBR，Floppy；可以从硬盘，第二硬盘，逻辑分区，CD-ROM,Floppy,USB,Zip,LAN启动，可以启动MS-DOS,Windows 9x/Me, Linux；NTLDR可以放在MBR/VBR，Floopy,不能只放在MBR，可以从硬盘，CD-ROM,Floopy,LAN启动，能启动MS-DOS，Windows 9x/Me, Windows NT系列。
  1. 了解u-boot的功能。
 
 ## 3.3 中断、异常和系统调用比较
@@ -88,11 +54,10 @@ uCore的系统调用大概有22个。
  
 ## 3.4 linux系统调用分析
  1. 通过分析[lab1_ex0](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab1/lab1-ex0.md)了解Linux应用的系统调用编写和含义。(w2l1)
-
-－ objdump：显示目标文件中的详细信息，可用于进行反汇编
-－ nm：列出目标文件中的符号
-－ file：检测文件类型
-－ lab1_ex0实现了sys_write系统调用，在%eax,%ebx,%ecx,%edx寄存器中分别赋值$SYS_write（4）, $STDOUT（1）, $hello, $12(hello字符串长度)，通过int $0x80进行系统调用。
+-  objdump：显示目标文件中的详细信息，可用于进行反汇编
+-  nm：列出目标文件中的符号
+-  file：检测文件类型
+-  lab1_ex0实现了sys_write系统调用，在%eax,%ebx,%ecx,%edx寄存器中分别赋值$SYS_write（4）, $STDOUT（1）, $hello, $12(hello字符串长度)，通过int $0x80进行系统调用。
 
  ```
   + 采分点：说明了objdump，nm，file的大致用途，说明了系统调用的具体含义

@@ -54,8 +54,32 @@ lab1中的cprintf函数最终通过哪些外设完成了对字符串的输出？
 ---
 
 lab1中printfmt函数用到了可变参，请参考写一个小的linux应用程序，完成实现定义和调用一个可变参数的函数。(spoc)
-- [x]  
+- 使用man va_arg查找到了可变参数的实现和使用方式。需要用到其中的va_start va_arg和va_end函数以及va_list结构体。
+- 下面的程序实现了一个可变参的average函数，其中第一个参数是输入数字的个数num，后面的可变参数需要求平均值的数字，函数求出了其中的平均数并返回。
 
+```
+#include <stdio.h>
+#include <stdarg.h>
+
+double average(int num, ...){
+	double sum = 0.0;
+	va_list valist;
+	
+	va_start(valist, num);
+	int i = 0;
+	for (i = 0; i< num; i++){
+		sum += va_arg(valist, int);
+	}
+
+	va_end(valist);
+	return sum / num;
+}
+
+int main(){
+	printf("The average: %lf\n", average(4, 2, 3, 4, 5));
+	printf("The average: %lf\n", average(3, 1, 2, 3));
+}
+```
 
 
 如果让你来一个阶段一个阶段地从零开始完整实现lab1（不是现在的填空考方式），你的实现步骤是什么？（比如先实现一个可显示字符串的bootloader（描述一下要实现的关键步骤和需要注意的事项），再实现一个可加载ELF格式文件的bootloader（再描述一下进一步要实现的关键步骤和需要注意的事项）...） (spoc)

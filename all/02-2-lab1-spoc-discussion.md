@@ -78,6 +78,7 @@ double average(int num, ...){
 int main(){
 	printf("The average: %lf\n", average(4, 2, 3, 4, 5));
 	printf("The average: %lf\n", average(3, 1, 2, 3));
+	return 0;
 }
 ```
 

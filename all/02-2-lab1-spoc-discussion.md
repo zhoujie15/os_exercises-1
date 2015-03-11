@@ -24,6 +24,7 @@ NOTICE
 >  
 
 lab1中完成了对哪些外设的访问？ (w2l2)
+- 时钟，串口，并口，CGA，键盘。
  ```
   + 采分点：说明了ucore OS访问的外设
   - 答案没有涉及如下3点；（0分）
@@ -78,7 +79,6 @@ double average(int num, ...){
 int main(){
 	printf("The average: %lf\n", average(4, 2, 3, 4, 5));
 	printf("The average: %lf\n", average(3, 1, 2, 3));
-	return 0;
 }
 ```
 

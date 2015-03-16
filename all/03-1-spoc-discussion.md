@@ -28,6 +28,78 @@ NOTICE
 
 请参考ucore lab2代码，采用`struct pmm_manager` 根据你的`学号 mod 4`的结果值，选择四种（0:最优匹配，1:最差匹配，2:最先匹配，3:buddy systemm）分配算法中的一种或多种，在应用程序层面(可以 用python,ruby,C++，C，LISP等高语言)来实现，给出你的设思路，并给出测试用例。 (spoc)
 
+```
+#coding:utf-8
+
+class pmm_manager:
+    emptyList = []      # 空闲空间表 元素为list ［起始地址，大小］
+    runList = []        # 运行进程表 元素为list ［起始地址，占用内存大小，进程号］
+    
+    def init(self, size):   # 初始化操作
+        self.emptyList = []
+        self.runList = []
+        self.emptyList.append([0, size])    # 根据输入参数设置初始空间
+
+    def allocate(self, size, id):   # 最先匹配算法，输入进程需要的空间大小size和进程id
+        for item in self.emptyList:
+            if item[1] >= size:     # 找到第一个满足条件的空间
+                self.runList.append([item[0], size, id])    # 加入运行进程表
+                print "Allocate process " + str(id) + " on start memory address " + str(item[0])
+                if (item[1] > size):
+                    self.emptyList.append([item[0] + size, item[1] - size]) # 如果该空间还有剩余
+                self.emptyList = sorted(self.emptyList, key = lambda x:x[0]) # 根据起始地址排序
+                self.emptyList.remove(item)
+            break
+    
+    def release(self, size, id):        # 释放内存方法 输入进程占用的内存大小size和进程id
+        for item in self.runList:
+            if (item[2] == id and item[1] == size):     # 找到相应的进程
+                print "Release process " + str(id) + " on start memory address " + str(item[0])
+                self.runList.remove(item)   # 在进程表中删除
+                blockAddr = item[0]
+                blockSize = item[1]
+                for i in range(0, len(self.emptyList)):
+                    if self.emptyList[i][0] > item[0]:
+                        if item[0] + item[1] == self.emptyList[i][0]:   # 如果和后一段空间相连，合并
+                            blockSize += self.emptyList[i][1]
+                            blockAddr = item[0]
+                            del(self.emptyList[i])
+                        if  i - 1 >= 0 and self.emptyList[i-1][0] + self.emptyList[i-1][1] == item[0]:  # 如果和前一段空间相连，合并
+                            blockSize += self.emptyList[i-1][1]
+                            blockAddr = self.emptyList[i-1][0]
+                            del(self.emptyList[i - 1])
+                        self.emptyList.append([blockAddr, blockSize])
+                        self.emptyList = sorted(self.emptyList, key = lambda x:x[0])
+                        break
+                break
+```
+
+测试样例如下：
+
+```
+    pmm = pmm_manager()
+    pmm.init(4096)          # 初始化过程
+
+    pmm.allocate(512, 0)    # 自己编写的测试样例
+    pmm.allocate(128, 1)
+    pmm.allocate(128, 2)
+    pmm.allocate(64, 3)
+    print pmm.emptyList
+    print pmm.runList
+    pmm.release(512, 0)
+    print pmm.emptyList
+    print pmm.runList
+    pmm.allocate(128, 4)
+    print pmm.emptyList
+    print pmm.runList
+    pmm.release(128, 1)
+    pmm.release(64, 3)
+    pmm.release(128,2)
+    pmm.release(128, 4)
+    print pmm.emptyList
+    print pmm.runList
+```
+
 --- 
 
 ## 扩展思考题

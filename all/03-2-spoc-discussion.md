@@ -64,7 +64,7 @@ Virtual Address 390e
 Virtual Address 748b
 ```
 
-运行程序addr.py得到本题答案：
+运行程序[addr.py](./03-2-addr.py)得到本题答案：
 ```
 Virtual Address 6c74:
   --> pde index:0x1b  pde contents:(valid 1, pfn 0x20)

@@ -64,7 +64,7 @@ Virtual Address 390e
 Virtual Address 748b
 ```
 
-比如答案可以如下表示：
+运行程序addr.py得到本题答案：
 ```
 Virtual Address 6c74:
   --> pde index:0x1b  pde contents:(valid 1, pfn 0x20)

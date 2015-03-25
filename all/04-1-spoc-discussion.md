@@ -139,7 +139,7 @@ Virtual Address 1e6f(0 001_11 10_011 0_1111):
       --> To Disk Sector Address 0x2cf(0001011001111) --> Value: 1c
 ```
 
-采用程序4-2-addr.py[./4-2-addr.py]进行处理，输入文件为memory，为提供的物理内存和硬盘模拟数据，输出为answer，是得到的答案。
+采用程序[4-2-addr.py](./04-02-addr.py)进行处理，输入文件为memory，为提供的物理内存和硬盘模拟数据，输出为answer，是得到的答案。
 
 得到的程序结果如下，可能和标准格式有所不同。
 

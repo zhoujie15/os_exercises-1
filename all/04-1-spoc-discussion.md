@@ -139,6 +139,34 @@ Virtual Address 1e6f(0 001_11 10_011 0_1111):
       --> To Disk Sector Address 0x2cf(0001011001111) --> Value: 1c
 ```
 
+采用程序4-2-addr.py[./4-2-addr.py]进行处理，输入文件为memory，为提供的物理内存和硬盘模拟数据，输出为answer，是得到的答案。
+
+得到的程序结果如下，可能和标准格式有所不同。
+
+```
+Virtual Address 6653:
+  --> pde index:0x19  pde contents:(valid 0, pfn 0x7f)
+      --> Fault (page directory entry not valid)
+Virtual Address 1c13:
+  --> pde index:0x7  pde contents:(valid 1, pfn 0x3d)
+    --> pte index:0x0  pte content:(valid 1, pfn 0x76)
+      --> Translate to Physical Address 0xed3 --> Value: 0x12
+Virtual Address 6890:
+  --> pde index:0x1a  pde contents:(valid 0, pfn 0x7f)
+      --> Fault (page directory entry not valid)
+Virtual Address 0af6:
+  --> pde index:0x2  pde contents:(valid 1, pfn 0x21)
+    --> pte index:0x17  pte content:(valid 0, pfn 0x7f)
+      --> To Disk Sector Address 0xff6 --> Value: 0x3
+Virtual Address 1e6f:
+  --> pde index:0x7  pde contents:(valid 1, pfn 0x3d)
+    --> pte index:0x13  pte content:(valid 0, pfn 0x16)
+      --> To Disk Sector Address 0x2cf --> Value: 0x1c
+```
+
+需要注意当访问页目录得到valid为0时，产生缺页异常。
+
+当页表项valid为0时，从硬盘中根据物理地址查询需要的值。
 ## 扩展思考题
 ---
 (1)请分析原理课的缺页异常的处理流程与lab3中的缺页异常的处理流程（分析粒度到函数级别）的异同之处。

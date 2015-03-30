@@ -58,6 +58,8 @@ S(t + 1) = (S(t) - {v(t)}) + {b(t)}
    这种情况不会出现。假设出现，
 
 (2)（spoc）根据你的`学号 mod 4`的结果值，确定选择四种替换算法（0：LRU置换算法，1:改进的clock 页置换算法，2：工作集页置换算法，3：缺页率置换算法）中的一种来设计一个应用程序（可基于python, ruby, C, C++，LISP等）模拟实现，并给出测试。请参考如python代码或独自实现。
+
+
 学号为2012011394，实现了工作集置换算法。
 ```
 if __name__ == '__main__':
@@ -83,6 +85,12 @@ if __name__ == '__main__':
         for item in workSet.items():
             print item[0]
 ```
+
+在工作集中记录一个内存的访问时间，存储二元组（n, time)
+ - 当页访问命中时，遍历工作集中的每一个项，检查其访问时间和当前时间之差是否超过窗口，如果超过则移除。
+ - 当页访问缺失时，直接将页加入到工作集中，此时可能导致工作集增大。
+
+
  - [页置换算法实现的参考实例](https://github.com/chyyuu/ucore_lab/blob/master/related_info/lab3/page-replacement-policy.py)
  
 ## 扩展思考题

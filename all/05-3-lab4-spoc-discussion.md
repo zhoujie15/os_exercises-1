@@ -63,6 +63,66 @@ tf和context中的esp
 
 > 注意 理解对kstack, trapframe, context等的初始化
 
+kstack的初始化
+'''
+static int
+setup_kstack(struct proc_struct *proc) {
+    struct Page *page = alloc_pages(KSTACKPAGE);
+    if (page != NULL) {
+        proc->kstack = (uintptr_t)page2kva(page);
+        return 0;
+    }
+    return -E_NO_MEM;
+}
+'''
+这里在内核堆栈分配了KSTACKPAGE大小的页。
+
+
+trapframe的初始化
+'''
+int
+kernel_thread(int (*fn)(void *), void *arg, uint32_t clone_flags) {
+    struct trapframe tf;
+    memset(&tf, 0, sizeof(struct trapframe));
+    tf.tf_cs = KERNEL_CS;
+    tf.tf_ds = tf.tf_es = tf.tf_ss = KERNEL_DS;
+    tf.tf_regs.reg_ebx = (uint32_t)fn;
+    tf.tf_regs.reg_edx = (uint32_t)arg;
+    tf.tf_eip = (uint32_t)kernel_thread_entry;
+    return do_fork(clone_flags | CLONE_VM, 0, &tf);
+}
+
+static void
+copy_thread(struct proc_struct *proc, uintptr_t esp, struct trapframe *tf) {
+    proc->tf = (struct trapframe *)(proc->kstack + KSTACKSIZE) - 1;
+    *(proc->tf) = *tf;
+    proc->tf->tf_regs.reg_eax = 0;
+    proc->tf->tf_esp = esp;
+    proc->tf->tf_eflags |= FL_IF;
+
+    proc->context.eip = (uintptr_t)forkret;
+    proc->context.esp = (uintptr_t)(proc->tf);
+}
+
+'''
+
+在kernel_thread中对tf的一些寄存器进行了设置，在copythread中对于eax esp和eflags等进行了设置。
+
+context的初始化
+'''
+static void
+copy_thread(struct proc_struct *proc, uintptr_t esp, struct trapframe *tf) {
+    proc->tf = (struct trapframe *)(proc->kstack + KSTACKSIZE) - 1;
+    *(proc->tf) = *tf;
+    proc->tf->tf_regs.reg_eax = 0;
+    proc->tf->tf_esp = esp;
+    proc->tf->tf_eflags |= FL_IF;
+
+    proc->context.eip = (uintptr_t)forkret;
+    proc->context.esp = (uintptr_t)(proc->tf);
+}
+'''
+最后两句对context进行了设置，主要设置eip为forkret，将esp设置为刚刚分配的内核堆栈地址。
 
 当前进程中唯一，操作系统的整个生命周期不唯一，在get_pid中会循环使用pid，耗尽会等待
 

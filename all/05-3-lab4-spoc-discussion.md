@@ -54,6 +54,11 @@ tf和context中的esp
 
 > 注意 state、pid、cr3，context，trapframe的含义
 
+通过调用kernel_thread进行线程的创建分配过程。
+
+1. 首先在kernel_thread函数中会进行trapframe的初始化。然后调用do_fork进行线程的创建。
+2. 在do_fork中，会进行这样的操作：首先初始化一个proc_struct，分配pid，然后调用setup_kstack和copy_thread分别进行proc的kstack、trapframe和context的初始化，然后将其加入进程表，将进程唤醒，设置父进程后返回。
+
 ### 练习2：分析并描述新创建的内核线程是如何分配资源的
 
 > 注意 理解对kstack, trapframe, context等的初始化

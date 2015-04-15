@@ -130,6 +130,8 @@ copy_thread(struct proc_struct *proc, uintptr_t esp, struct trapframe *tf) {
 
 代码详见 [这里](./lab4-spoc-discuss)
 
+新增了进程proc3，在程序运行时会得到相关输出。
+
 程序中实现了对于进程状态转换的输出，当进程切换到RUNNABLE、SLEEPING、ZOMBIE时程序会进行输出。
 
 ### 练习4 （非必须，有空就做）：增加可以睡眠的内核线程，睡眠的条件和唤醒的条件可自行设计，并给出测试用例，并在spoc练习报告中给出设计实现说明

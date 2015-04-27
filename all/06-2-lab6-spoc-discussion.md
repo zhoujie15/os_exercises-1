@@ -37,7 +37,42 @@
 即在ucore运行过程中通过`cprintf`函数来完整地展现出来多个进程在调度算法和框架的支撑下，在相关调度点如何动态调度和执行的细节。(约全面细致约好)
 
 请完成如下练习，完成代码填写，并形成spoc练习报告
-> 需写练习报告和简单编码，完成后放到git server 对应的git repo中
+
+从相应调度点打印输出。主要的调度点如下：
+- do_exit
+- do_wait
+- init_main
+- cpu_idle
+- lock
+- trap
+> ---------------------- Scehdule at cpu_idle proc 0 --------------------------
+---------------------- Schedule at do_wait proc 1 --------------------------
+kernel_execve: pid = 2, name = "exit".
+I am the parent. Forking the child...
+I am parent, fork a child pid 3
+I am the parent, waiting now..
+---------------------- Schedule at do_wait proc 1 --------------------------
+I am the child.
+---------------------- Schedule at trap before proc 3--------------------------
+---------------------- Schedule at trap after proc 3--------------------------
+---------------------- Schedule at trap before proc 3--------------------------
+---------------------- Schedule at trap after proc 3--------------------------
+---------------------- Schedule at trap before proc 3--------------------------
+---------------------- Schedule at trap after proc 3--------------------------
+---------------------- Schedule at trap before proc 3--------------------------
+---------------------- Schedule at trap after proc 3--------------------------
+---------------------- Schedule at trap before proc 3--------------------------
+---------------------- Schedule at trap after proc 3--------------------------
+---------------------- Schedule at trap before proc 3--------------------------
+---------------------- Schedule at trap after proc 3--------------------------
+---------------------- Schedule at trap before proc 3--------------------------
+---------------------- Schedule at trap after proc 3--------------------------
+---------------------- Schedule at do_exit proc 3--------------------------
+waitpid 3 ok.
+exit pass.
+---------------------- Schedule at do_exit proc 2--------------------------
+---------------------- Schedule at init_main --------------------------
+
 
 ### 练习用的[lab6 spoc exercise project source code](https://github.com/chyyuu/ucore_lab/tree/master/labcodes_answer/lab6_result)
 

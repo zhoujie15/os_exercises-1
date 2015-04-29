@@ -40,6 +40,7 @@
 
 2. （spoc)了解race condition. 进入[race-condition代码目录](https://github.com/chyyuu/ucore_lab/tree/master/related_info/lab7/race-condition)。
 
+
  - 执行 `./x86.py -p loop.s -t 1 -i 100 -R dx`， 请问`dx`的值是什么？
  
 dx的值为－1。
@@ -77,8 +78,7 @@ x的值为1或2。
 x的值为1。因为两个线程的第一句汇编指令都讲内存中的值取出，值为0，增加之后再储存都为1。
 
 3. （spoc） 了解software-based lock, hardware-based lock, [software-hardware-lock代码目录](https://github.com/chyyuu/ucore_lab/tree/master/related_info/lab7/software-hardware-locks)
-
-  - 理解flag.s,peterson.s,test-and-set.s,ticket.s,test-and-test-and-set.s 请通过x86.py分析这些代码是否实现了锁机制？请给出你的实验过程和结论说明。能否设计新的硬件原子操作指令Compare-And-Swap,Fetch-And-Add？
+- 理解flag.s,peterson.s,test-and-set.s,ticket.s,test-and-test-and-set.s 请通过x86.py分析这些代码是否实现了锁机制？请给出你的实验过程和结论说明。能否设计新的硬件原子操作指令Compare-And-Swap,Fetch-And-Add？
 
 - flag.s没有实现锁机制，如果线程1在运行完第一句后执行了切换，那么两个线程的ax的值都会是flag，都为0。这样两个线程都会进入临界区。实际上，只要在设置flag为1之前进行线程切换都会产生问题。
 

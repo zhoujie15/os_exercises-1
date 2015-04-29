@@ -80,9 +80,81 @@ x的值为1。因为两个线程的第一句汇编指令都讲内存中的值取
 3. （spoc） 了解software-based lock, hardware-based lock, [software-hardware-lock代码目录](https://github.com/chyyuu/ucore_lab/tree/master/related_info/lab7/software-hardware-locks)
 - 理解flag.s,peterson.s,test-and-set.s,ticket.s,test-and-test-and-set.s 请通过x86.py分析这些代码是否实现了锁机制？请给出你的实验过程和结论说明。能否设计新的硬件原子操作指令Compare-And-Swap,Fetch-And-Add？
 
-- flag.s没有实现锁机制，如果线程1在运行完第一句后执行了切换，那么两个线程的ax的值都会是flag，都为0。这样两个线程都会进入临界区。实际上，只要在设置flag为1之前进行线程切换都会产生问题。
+3. （spoc） 了解software-based lock, hardware-based lock, [software-hardware-lock代码目录](https://github.com/chyyuu/ucore_lab/tree/master/related_info/lab7/software-hardware-locks)
 
-- test-and-test-set.s能够实现锁机制，采用反证法，如果两个线程都进入了临界区，那么两个线程的ax都为0，那么执行原子操作的时候都是mutex为0，然后将mutex设置为1。然而这里出现了一个矛盾，因为两个线程执行xchg的顺序有先后，所以当第一个线程运行完后，mutex中的值必然为1，所以另一个线程不会得到0，则产生矛盾，假设错误。所以该程序实现了锁机制。
+  - 理解flag.s,peterson.s,test-and-set.s,ticket.s,test-and-test-and-set.s 请通过x86.py分析这些代码是否实现了锁机制？请给出你的实验过程和结论说明。能否设计新的硬件原子操作指令Compare-And-Swap,Fetch-And-Add？
+
+> flag.s未实现锁机制:  
+       Thread 0                Thread 1         
+1000 mov  flag, %ax  
+1001 test $0, %ax  
+------ Interrupt ------  ------ Interrupt ------  
+                         1000 mov  flag, %ax  
+                         1001 test $0, %ax  
+------ Interrupt ------  ------ Interrupt ------  
+1002 jne  .acquire  
+1003 mov  $1, flag  
+------ Interrupt ------  ------ Interrupt ------  
+                         1002 jne  .acquire  
+                         1003 mov  $1, flag  
+这两个进程都有可能得到相同的flag值，即两个进程可能会同时进入临界区。  
+peterson.s未实现锁机制:  
+       Thread 0                Thread 1         
+1000 lea flag, %fx  
+1001 mov %bx, %cx  
+------ Interrupt ------  ------ Interrupt ------  
+                         1000 lea flag, %fx  
+                         1001 mov %bx, %cx  
+------ Interrupt ------  ------ Interrupt ------  
+1002 neg %cx  
+1003 add $1, %cx  
+------ Interrupt ------  ------ Interrupt ------  
+                         1002 neg %cx  
+                         1003 add $1, %cx  
+------ Interrupt ------  ------ Interrupt ------  
+1004 mov $1, 0(%fx,%bx,4)  
+1005 mov %cx, turn  
+------ Interrupt ------  ------ Interrupt ------  
+                         1004 mov $1, 0(%fx,%bx,4)  
+                         1005 mov %cx, turn  
+------ Interrupt ------  ------ Interrupt ------  
+1006 mov 0(%fx,%cx,4), %ax  
+1007 test $1, %ax  
+------ Interrupt ------  ------ Interrupt ------    
+                         1006 mov 0(%fx,%cx,4), %ax  
+                         1007 test $1, %ax  
+------ Interrupt ------  ------ Interrupt ------  
+1008 jne .fini  
+1012 mov count, %ax  
+------ Interrupt ------  ------ Interrupt ------    
+                         1008 jne .fini  
+                         1012 mov count, %ax  
+两个进程有可能同时将自身的flag设成1然后就都不能进入临界区;  
+test-and-set.s实现了锁机制,因为不管在任何位置切换进程都能保证有且只有进程进入临街区  
+ticket.s实现了锁机制,因为不论在那个位置切换进程都会使得每个进程获取到进入临界区时其他进程都不能获取到进入临界区的锁;  
+test-and-test-set.s能够实现锁机制，采用反证法，如果两个线程都进入了临界区，那么两个线程的ax都为0，那么执行原子操作的时候都是mutex为0，然后将mutex设置为1。然而这里出现了一个矛盾，因为两个线程执行xchg的顺序有先后，所以当第一个线程运行完后，mutex中的值必然为1，所以另一个线程不会得到0，则产生矛盾，假设错误。所以该程序实现了锁机制。  
+
+
+```
+Compare-And-Swap
+
+int CompareAndSwap(int *ptr, int expected, int new) {
+  int actual = *ptr;
+  if (actual == expected)
+    *ptr = new;
+  return actual;
+}
+```
+
+```
+Fetch-And-Add
+
+int FetchAndAdd(int *ptr) {
+  int old = *ptr;
+  *ptr = old + 1;
+  return old;
+}
+```
 ```
 Compare-And-Swap
 

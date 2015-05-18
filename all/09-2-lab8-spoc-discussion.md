@@ -50,6 +50,18 @@
 
 代码在[code](https://github.com/zhoujie15/os_exercises-1/edit/master/all/lab8_result)
 
+内核输出结果
+```
+sysfile_read in sysfile.c~~~~~~~~~~~~~~~~~~~~~~~
+file_read in file.c~~~~~~~~~~~~~~~~~~~~~~~~
+vop_read in inode.h~~~~~~~~~~~~~~~~~~~~~~~~
+sys_read in sys_inode.c~~~~~~~~~~~~~~~~~~~~~~
+sys_rbuf in sfs_io.c~~~~~~~~~~~~~~~~~~~~~
+disk0_io in dev_disk0.c~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------- ide_read_secs() in ide.c -------------------------
+
+```
+
 2. （spoc） 在下面的实验代码的基础上，实现基于文件系统的pipe IPC机制
 
 ### 练习用的[lab8 spoc exercise project source code](https://github.com/chyyuu/ucore_lab/tree/master/labcodes_answer/lab8_result)
